@@ -19,6 +19,9 @@ using Esri.ArcGISRuntime.Tasks.Offline;
 using Esri.ArcGISRuntime.UI;
 using Esri.ArcGISRuntime.ArcGISServices;
 using Esri.ArcGISRuntime.UI.Controls;
+using Esri.ArcGISRuntime.Toolkit.UI.Controls;
+using Android.Views;
+using System;
 
 namespace ArcGISRuntimeXamarin.Samples.ShowBookmarksWithToolkit
 {
@@ -28,11 +31,11 @@ namespace ArcGISRuntimeXamarin.Samples.ShowBookmarksWithToolkit
         "Toolkit",
         "Use the toolkit's BookmarksView to allow users to navigate to a map's bookmarks.",
         "")]
-    [ArcGISRuntime.Samples.Shared.Attributes.OfflineData()]
     public class ShowBookmarksWithToolkit : Activity
     {
         // Hold references to the UI controls.
         private MapView _myMapView;
+        private BookmarksView _bookmarksView;
 
         protected override void OnCreate(Bundle bundle)
         {
@@ -46,6 +49,7 @@ namespace ArcGISRuntimeXamarin.Samples.ShowBookmarksWithToolkit
 
         private void Initialize()
         {
+            _myMapView.Map = new Map(new Uri("https://arcgisruntime.maps.arcgis.com/home/item.html?id=16f1b8ba37b44dc3884afc8d5f454dd2"));
         }
 
         private void CreateLayout()
@@ -56,6 +60,13 @@ namespace ArcGISRuntimeXamarin.Samples.ShowBookmarksWithToolkit
             // Add the map view to the layout.
             _myMapView = new MapView(this);
             layout.AddView(_myMapView);
+            _myMapView.LayoutParameters = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MatchParent, ViewGroup.LayoutParams.MatchParent, 1f);
+
+            _bookmarksView = new BookmarksView(this);
+            _bookmarksView.GeoView = _myMapView;
+            _bookmarksView.LayoutParameters = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MatchParent, ViewGroup.LayoutParams.MatchParent, 1f);
+
+            layout.AddView(_bookmarksView);
 
             // Show the layout in the app.
             SetContentView(layout);
