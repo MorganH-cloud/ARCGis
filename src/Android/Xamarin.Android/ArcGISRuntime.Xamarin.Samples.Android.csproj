@@ -74,6 +74,7 @@
   </ItemGroup>
   <ItemGroup>
     <!-- Screenshots -->
+    <None Include="Samples\Toolkit\ShowBookmarksWithToolkit\ShowBookmarksWithToolkit.jpg" />
     <None Include="Samples\Layers\DisplaySubtypeFeatureLayer\DisplaySubtypeFeatureLayer.jpg" />
     <None Include="Samples\Layers\DisplayAnnotation\DisplayAnnotation.jpg" />
     <None Include="Samples\Network analysis\TraceUtilityNetwork\TraceUtilityNetwork.jpg" />
@@ -263,6 +264,7 @@
   </ItemGroup>
   <ItemGroup>
     <!-- Sample Code -->
+    <Compile Include="Samples\Toolkit\ShowBookmarksWithToolkit\ShowBookmarksWithToolkit.cs" />
     <Compile Include="Samples\Layers\DisplaySubtypeFeatureLayer\DisplaySubtypeFeatureLayer.cs" />
     <Compile Include="Samples\Layers\DisplayAnnotation\DisplayAnnotation.cs" />
     <Compile Include="Samples\Network analysis\TraceUtilityNetwork\TraceUtilityNetwork.cs" />
@@ -559,10 +561,13 @@
       <Version>100.7.0</Version>
     </PackageReference>
     <PackageReference Include="Esri.ArcGISRuntime.Hydrography">
-      <Version>100.8.0</Version>
+      <Version>100.8.0-daily2679</Version>
     </PackageReference>
     <PackageReference Include="Esri.ArcGISRuntime.Xamarin.Android">
-      <Version>100.8.0</Version>
+      <Version>100.8.0-daily2679</Version>
+    </PackageReference>
+    <PackageReference Include="Esri.ArcGISRuntime.Toolkit">
+      <Version>100.7.0-RC1</Version>
     </PackageReference>
     <PackageReference Include="PCLCrypto">
       <Version>2.0.147</Version>

@@ -114,6 +114,7 @@
   </ItemGroup>
   <ItemGroup>
     <!-- Screenshots -->
+    <Content Include="Samples\Toolkit\ShowBookmarksWithToolkit\ShowBookmarksWithToolkit.jpg" />
     <Content Include="Assets\banner-background-purple.png" />
     <Content Include="Samples\Analysis\DistanceMeasurement\DistanceMeasurement.jpg" />
     <Content Include="Samples\Analysis\LineOfSightGeoElement\LineOfSightGeoElement.jpg" />
@@ -367,6 +368,9 @@
   </ItemGroup>
   <ItemGroup>
     <!-- Sample Code -->
+    <Compile Include="Samples\Toolkit\ShowBookmarksWithToolkit\ShowBookmarksWithToolkit.xaml.cs">
+      <DependentUpon>ShowBookmarksWithToolkit.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Samples\Layers\DisplaySubtypeFeatureLayer\DisplaySubtypeFeatureLayer.xaml.cs">
       <DependentUpon>DisplaySubtypeFeatureLayer.xaml</DependentUpon>
     </Compile>
@@ -934,6 +938,10 @@
   </ItemGroup>
   <ItemGroup>
     <!-- Sample XAML -->
+    <Page Include="Samples\Toolkit\ShowBookmarksWithToolkit\ShowBookmarksWithToolkit.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Samples\Layers\DisplaySubtypeFeatureLayer\DisplaySubtypeFeatureLayer.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -1733,10 +1741,13 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Esri.ArcGISRuntime.Hydrography">
-      <Version>100.8.0</Version>
+      <Version>100.8.0-daily2679</Version>
     </PackageReference>
     <PackageReference Include="Esri.ArcGISRuntime.UWP">
-      <Version>100.8.0</Version>
+      <Version>100.8.0-daily2679</Version>
+    </PackageReference>
+    <PackageReference Include="Esri.ArcGISRuntime.Toolkit">
+      <Version>100.7.0-RC1</Version>
     </PackageReference>
     <PackageReference Include="MarkedNet">
       <Version>2.1.2</Version>

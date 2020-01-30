@@ -1,0 +1,22 @@
+{
+    "category": "Toolkit",
+    "description": "Use the toolkit's BookmarksView to allow users to navigate to a map's bookmarks.",
+    "formal_name": "ShowBookmarksWithToolkit",
+    "ignore": false,
+    "images": [
+        "ShowBookmarksWithToolkit.jpg"
+    ],
+    "keywords": [
+    ],
+    "nuget_packages": {
+        "Esri.ArcGISRuntime": "100.6.0"
+    },
+    "redirect_from": [
+        "/net/latest/wpf/sample-code/ShowBookmarksWithToolkit.htm"
+    ],
+    "relevant_apis": [
+    ],
+    "snippets": [
+    ],
+    "title": "Show bookmarks with toolkit"
+}
