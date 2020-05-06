@@ -130,6 +130,7 @@ def main():
                     sample.try_replace_with_common_readme(platform, common_dir_path, path_to_readme)
                 if operation in ["improve", "sync"]:
                     sample.flush_to_json(os.path.join(r, sample_dir, "readme.metadata.json"))
+                update_attribute(sample, os.path.join(r, sample_dir))
                 list_of_sample_dirs.append(sample_dir)
                 # track samples in each category to enable TOC generation
                 if sample.category in list_of_samples.keys():
@@ -139,6 +140,18 @@ def main():
         # write out samples TOC
         if operation in ["toc", "improve", "sync"]:
             write_samples_toc(get_platform_samples_root(platform, sample_root), get_relative_path_to_samples_from_platform_root(platform), list_of_samples)
+    return
+
+def update_attribute(sample, sample_dir):
+    name = sample_dir.split('\\')[-1]
+    path_to_source = os.path.join(sample_dir, name + ".xaml.cs")
+    with open(path_to_source, 'rw') as f:
+        in_attributes = False
+        for line in f:
+            if ".Sample(" in line and "[" in line:
+                print(path_to_source)
+                print(line)
+                in_attributes = True
     return
 
 if __name__ == "__main__":
