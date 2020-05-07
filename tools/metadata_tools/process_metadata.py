@@ -143,66 +143,69 @@ def main():
     return
 
 def update_attribute(sample, sample_dir):
-    try:
-        name = sample_dir.split('\\')[-1]
-        # if not "Xamarin.iOS" in sample_dir:
-        #     return
-        if "Xamarin.iOS" in sample_dir or "Xamarin.Android" in sample_dir:
-            print("beans")
-            ending = ".cs"
-        else:
-            ending = ".xaml.cs"
-        path_to_source = os.path.join(sample_dir, name + ending)
-        with open(path_to_source, 'r') as f:
-            lines = f.readlines()
-            i = 0
-            while i < len(lines):
-                line = lines[i]
-                if ".Sample(" in line and "[" in line:
-                    #store the start index
-                    start = i
-                    #print(path_to_source)
-                if "]" in line:
-                    #store the end index
-                    end = i
-                    # delete the existing attributes
-                    del lines[start:end+1]
+    
+    name = sample_dir.split('\\')[-1]
+    if not "Xamarin.iOS" in sample_dir:
+        return
+    if "Xamarin.iOS" in sample_dir or "Xamarin.Android" in sample_dir:
+        ending = ".cs"
+    else:
+        ending = ".xaml.cs"
+    path_to_source = os.path.join(sample_dir, name + ending)
+    with open(path_to_source, 'r') as f:
+        lines = f.readlines()
+        i = 0
+        start_found = False
+        while i < len(lines):
+            line = lines[i]
+            if ".Sample(" in line and "[" in line:
+                #store the start index
+                start = i
+                start_found = True
+            if "]" in line and start_found:
+                #store the end index
+                end = i
+                # delete the existing attributes
+                del lines[start:end+1]
 
-                    # Create the new attributes
-                    new_attributes = "    [ArcGISRuntime.Samples.Shared.Attributes.Sample(\n"
-                    new_attributes += "        \"" + sample.friendly_name + "\",\n"
-                    new_attributes += "        \"" + sample.category + "\",\n"
-                    new_attributes += "        \"" + sample.description + "\",\n"
+                # Create the new attributes
+                new_attributes = "    [ArcGISRuntime.Samples.Shared.Attributes.Sample(\n"
+                new_attributes += "        \"" + sample.friendly_name + "\",\n"
+                new_attributes += "        \"" + sample.category + "\",\n"
+                new_attributes += "        \"" + sample.description + "\",\n"
 
-                    # Instructions can have multiple items, we only add the first one.
-                    if type(sample.how_to_use) is str:
-                        new_attributes += "        \"" + sample.how_to_use + "\""
-                    elif type(sample.how_to_use) is list and len(sample.how_to_use)>0:
-                        new_attributes += "        \"" + sample.how_to_use[0] + "\""
-                        print(new_attributes)
-                    else:
-                        new_attributes += "        \"\""
+                # Instructions can have multiple items, we only add the first one.
+                if type(sample.how_to_use) is str:
+                    new_attributes += "        \"" + sample.how_to_use + "\""
+                elif type(sample.how_to_use) is list and len(sample.how_to_use)>0:
+                    new_attributes += "        \"" + sample.how_to_use[0] + "\""
+                    print(new_attributes)
+                else:
+                    new_attributes += "        \"\""
 
-                    # Add the tags
-                    if type(sample.keywords) is list and len(sample.keywords)>0:
-                        new_attributes += ",\n        "
-                        for tag in sample.keywords:
-                            new_attributes += "\"" + tag +"\", "
-                        new_attributes = new_attributes[:-2]
+                # Add the tags
+                if type(sample.keywords) is list and len(sample.keywords)>0:
+                    new_attributes += ",\n        "
+                    for tag in sample.keywords:
+                        new_attributes += "\"" + tag +"\", "
+                    new_attributes = new_attributes[:-2]
 
-                    # Add the closing characters
-                    new_attributes += ")]"
+                # Add the closing characters
+                new_attributes += ")]"
 
-                    lines.insert(start, new_attributes)
-                    
-                    for l in lines:
-                        print(l)
+                # Add the new attributes
+                lines.insert(start, new_attributes)
+                # Remove an errant newline that precedes the new attributes
+                lines[start-1] = lines[start-1][:-1]
+                
+                for l in lines:
+                    print(l)
+                    #return
 
-                    break
-                i=i+1
-    except:
-        print("Error with sample: "+sample_dir)
-    return
+                break
+            i=i+1
+    # except:
+    #     print("Error with sample: "+sample_dir)
 
 if __name__ == "__main__":
     main()
