@@ -143,69 +143,85 @@ def main():
     return
 
 def update_attribute(sample, sample_dir):
-    
-    name = sample_dir.split('\\')[-1]
-    if not "Xamarin.iOS" in sample_dir:
-        return
-    if "Xamarin.iOS" in sample_dir or "Xamarin.Android" in sample_dir:
-        ending = ".cs"
-    else:
-        ending = ".xaml.cs"
-    path_to_source = os.path.join(sample_dir, name + ending)
-    with open(path_to_source, 'r') as f:
-        lines = f.readlines()
-        i = 0
-        start_found = False
-        while i < len(lines):
-            line = lines[i]
-            if ".Sample(" in line and "[" in line:
-                #store the start index
-                start = i
-                start_found = True
-            if "]" in line and start_found:
-                #store the end index
-                end = i
-                # delete the existing attributes
-                del lines[start:end+1]
+    try:
+        # Get the formal name of the sample
+        name = sample_dir.split('\\')[-1]
 
-                # Create the new attributes
-                new_attributes = "    [ArcGISRuntime.Samples.Shared.Attributes.Sample(\n"
-                new_attributes += "        \"" + sample.friendly_name + "\",\n"
-                new_attributes += "        \"" + sample.category + "\",\n"
-                new_attributes += "        \"" + sample.description + "\",\n"
+        # Get the correct file ending
+        if "Xamarin.iOS" in sample_dir or "Xamarin.Android" in sample_dir:
+            ending = ".cs"
+        else:
+            ending = ".xaml.cs"
 
-                # Instructions can have multiple items, we only add the first one.
-                if type(sample.how_to_use) is str:
-                    new_attributes += "        \"" + sample.how_to_use + "\""
-                elif type(sample.how_to_use) is list and len(sample.how_to_use)>0:
-                    new_attributes += "        \"" + sample.how_to_use[0] + "\""
-                    print(new_attributes)
-                else:
-                    new_attributes += "        \"\""
+        # Open the file
+        path_to_source = os.path.join(sample_dir, name + ending)
+        with open(path_to_source, 'r') as f:
+            lines = f.readlines()
+            i = 0
+            start_found = False
 
-                # Add the tags
-                if type(sample.keywords) is list and len(sample.keywords)>0:
-                    new_attributes += ",\n        "
-                    for tag in sample.keywords:
-                        new_attributes += "\"" + tag +"\", "
-                    new_attributes = new_attributes[:-2]
+            # Use an indexed while loop so we can delete sections of lines
+            while i < len(lines):
+                line = lines[i]
 
-                # Add the closing characters
-                new_attributes += ")]"
+                # Check if the line is the start of the attributes
+                if ".Sample(" in line and "[" in line:
+                    #store the start index
+                    start = i
+                    start_found = True
 
-                # Add the new attributes
-                lines.insert(start, new_attributes)
-                # Remove an errant newline that precedes the new attributes
-                lines[start-1] = lines[start-1][:-1]
-                
-                for l in lines:
-                    print(l)
-                    #return
+                # Check for the end of the attributes
+                if "]" in line and start_found:
+                    # Store the end index
+                    end = i
+                    # Delete the existing attributes
+                    del lines[start:end+1]
 
-                break
-            i=i+1
-    # except:
-    #     print("Error with sample: "+sample_dir)
+                    # Create the new attributes
+                    new_attributes = "    [ArcGISRuntime.Samples.Shared.Attributes.Sample(\n"
+                    new_attributes += "        \"" + sample.friendly_name + "\",\n"
+                    new_attributes += "        \"" + sample.category + "\",\n"
+                    new_attributes += "        \"" + sample.description + "\",\n"
+
+                    # Add the instructions
+                    if type(sample.how_to_use) is str:
+                        instructions = sample.how_to_use
+                    elif type(sample.how_to_use) is list and len(sample.how_to_use)>0:
+                        instructions = sample.how_to_use[0]
+                    else:
+                        instructions = ""
+
+                    # Instructions can have multiple items, we only add the first one.
+                    if "\n" in instructions:
+                        instructions = "        \"" + instructions.split("\n")[0] + "\""
+                    new_attributes += instructions
+
+                    # Add the tags
+                    if type(sample.keywords) is list and len(sample.keywords)>0:
+                        new_attributes += ",\n        "
+                        for tag in sample.keywords:
+                            new_attributes += "\"" + tag +"\", "
+                        # Remove the trailing comma-space
+                        new_attributes = new_attributes[:-2]
+
+                    # Add the closing characters
+                    new_attributes += ")]\n"
+
+                    # Add the new attributes
+                    lines.insert(start, new_attributes)
+
+                    # Break and write the revised file.
+                    break
+                i=i+1
+
+        # Rewrite the file with updated attributes.
+        with open(path_to_source, "r+") as file:
+            file.seek(0)
+            file.writelines(lines)
+            file.truncate()
+            print(f"{sample_dir} attributes written")
+    except:
+        print("Error with sample: "+sample_dir)
 
 if __name__ == "__main__":
     main()
