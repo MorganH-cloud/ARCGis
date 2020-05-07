@@ -193,7 +193,9 @@ def update_attribute(sample, sample_dir):
 
                     # Instructions can have multiple items, we only add the first one.
                     if "\n" in instructions:
-                        instructions = "        \"" + instructions.split("\n")[0] + "\""
+                        instructions = instructions.split("\n")[0]
+                    instructions = "        \"" + instructions + "\""
+                        
                     new_attributes += instructions
 
                     # Add the tags
