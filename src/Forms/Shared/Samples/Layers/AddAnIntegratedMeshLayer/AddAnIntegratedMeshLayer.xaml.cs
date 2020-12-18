@@ -24,7 +24,7 @@ namespace ArcGISRuntimeXamarin.Samples.AddAnIntegratedMeshLayer
     {
         // URLs for the services used by this sample.
         private const string IntegratedMeshLayerUrl =
-            "https://tiles.arcgis.com/tiles/FQD0rKU8X5sAQfh8/arcgis/rest/services/VRICON_Yosemite_Sample_Integrated_Mesh_scene_layer/SceneServer";
+            "https://tiles.arcgis.com/tiles/z2tnIkrLQ2BRzr6P/arcgis/rest/services/Girona_Spain/SceneServer";
 
         private const string ElevationServiceUrl = "https://elevation3d.arcgis.com/arcgis/rest/services/WorldElevation3D/Terrain3D/ImageServer";
 
@@ -51,7 +51,7 @@ namespace ArcGISRuntimeXamarin.Samples.AddAnIntegratedMeshLayer
             MySceneView.Scene.OperationalLayers.Add(meshLayer);
 
             // Start with camera pointing at El Capitan.
-            MySceneView.SetViewpointCamera(new Camera(new MapPoint(-119.622075, 37.720650, 2104.901239), 315.50368761552056, 78.09465920130114, 0));
+            MySceneView.SetViewpointCamera(new Camera(new MapPoint(2.8259, 41.9906, 200.0), 190.0, 65.0, 0));
         }
     }
 }
